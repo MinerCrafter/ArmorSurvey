@@ -1,0 +1,24 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ft.imagicraft</groupId>
+  <version>0.9-SNAPSHOT</version>
+  <dependencies>
+  	<dependency>
+  		<groupId>org.bukkit</groupId>
+  		<artifactId>bukkit</artifactId>
+  		<version>1.2.5-R1.4-SNAPSHOT</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>net.milkbowl.vault</groupId>
+  		<artifactId>Vault</artifactId>
+  		<version>1.2.17-SNAPSHOT</version>
+  	</dependency>
+  </dependencies>
+  <url>http://www.imagicraft.fr/index.php?/topic/556-plugin-fait-maison-armorsurvey/</url>
+  <name>ArmorSurvey</name>
+  <organization>
+  	<name>ImagiCraft.fr</name>
+  	<url>http://www.imagicraft.fr</url>
+  </organization>
+  <artifactId>ArmorSurvey</artifactId>
+</project>

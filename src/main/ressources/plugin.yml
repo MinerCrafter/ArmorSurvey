@@ -1,0 +1,5 @@
+name: ArmorSurvey
+main: fr.imagicraft.armorsurvey.ArmorSurvey
+version: 0.9
+depend: [ Vault ]
+commands:
