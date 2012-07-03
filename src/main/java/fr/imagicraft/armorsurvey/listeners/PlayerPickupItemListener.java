@@ -21,6 +21,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.Material;
 
@@ -33,12 +34,12 @@ import fr.imagicraft.armorsurvey.ArmorSurvey;
  * @author MinerCrafter
  */
 public class PlayerPickupItemListener implements Listener {
-	
+
 	/**
 	 * Root plugin
 	 */
 	protected ArmorSurvey base;
-	
+
 	/**
 	 * Constructor
 	 * 
@@ -47,14 +48,14 @@ public class PlayerPickupItemListener implements Listener {
 	public PlayerPickupItemListener( ArmorSurvey base ) {
 		this.base = base;
 	}
-	
+
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onItemPickup( PlayerPickupItemEvent event )
 	{
 		if ( event.isCancelled() ) {
 			return;
 		}
-		
+
 		// Getting item type
 		Material itemType = event.getItem().getItemStack().getType();
 		if ( null == itemType ) {
@@ -66,48 +67,36 @@ public class PlayerPickupItemListener implements Listener {
 		if ( null == armorItem ) {
 			return;
 		}
-		
+
 		// Allowed to do this ?
 		if ( ! this.base.getPerms().has( event.getPlayer(), "armorsurvey.use" ) ) {
 			return;
 		}
-		
+
 		// Getting player's inventory
 		PlayerInventory inv = event.getPlayer().getInventory();
 		if ( null == inv ) {
 			return;
 		}
-		
-		// If this variable is set to true, the plugin cancel the event.
-		// If set to false, the plugin let Minecraft server manage this event.
-		boolean isSetToSlot = false;
-		
-		// What is the part of armor ?
-		if ( armorItem.isHelmet() && inv.getHelmet() == null ) {
-			inv.setHelmet( event.getItem().getItemStack() );
-			isSetToSlot = true;
-		}
-		else if ( armorItem.isChestplate() && inv.getChestplate() == null ) {
-			inv.setChestplate( event.getItem().getItemStack() );
-			isSetToSlot = true;
-		}
-		else if ( armorItem.isLeggings() && inv.getLeggings() == null ) {
-			inv.setLeggings( event.getItem().getItemStack() );
-			isSetToSlot = true;
-		}
-		else if ( armorItem.isBoots() && inv.getBoots() == null ) {
-			inv.setBoots( event.getItem().getItemStack() );
-			isSetToSlot = true;
-		}
-		
-		// The item is correctly put in an armor slot of the player inventory ?
-		if ( isSetToSlot )
-		{
-			event.getItem().remove();
 
-			// Todo : Play pickup sound
-			//event.getPlayer().getWorld().playEffect(event.getPlayer().getLocation(), Effect.CLICK2, 0);
-			event.setCancelled( true );
-		}
+		ItemStack it = event.getItem().getItemStack();
+
+		// What is the part of armor ?
+		if ( armorItem.isHelmet() && inv.getHelmet() == null )
+			inv.setHelmet( it );
+		else if ( armorItem.isChestplate() && inv.getChestplate() == null )
+			inv.setChestplate( it );
+		else if ( armorItem.isLeggings() && inv.getLeggings() == null )
+			inv.setLeggings( it );
+		else if ( armorItem.isBoots() && inv.getBoots() == null )
+			inv.setBoots( it );
+		else
+			return;
+
+		event.getItem().remove();
+
+		// Todo : Play pickup sound
+		//event.getPlayer().getWorld().playEffect(event.getPlayer().getLocation(), Effect.CLICK2, 0);
+		event.setCancelled( true );
 	}
 }
