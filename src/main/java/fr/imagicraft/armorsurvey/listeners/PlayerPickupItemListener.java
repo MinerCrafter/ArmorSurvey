@@ -78,36 +78,29 @@ public class PlayerPickupItemListener implements Listener {
 			return;
 		}
 		
-		// If this variable is set to true, the plugin cancel the event.
-		// If set to false, the plugin let Minecraft server manage this event.
-		boolean isSetToSlot = false;
-		
 		// What is the part of armor ?
 		if ( armorItem.isHelmet() && inv.getHelmet() == null ) {
 			inv.setHelmet( event.getItem().getItemStack() );
-			isSetToSlot = true;
 		}
 		else if ( armorItem.isChestplate() && inv.getChestplate() == null ) {
 			inv.setChestplate( event.getItem().getItemStack() );
-			isSetToSlot = true;
 		}
 		else if ( armorItem.isLeggings() && inv.getLeggings() == null ) {
 			inv.setLeggings( event.getItem().getItemStack() );
-			isSetToSlot = true;
 		}
 		else if ( armorItem.isBoots() && inv.getBoots() == null ) {
 			inv.setBoots( event.getItem().getItemStack() );
-			isSetToSlot = true;
+		}
+		else {
+			return;
 		}
 		
 		// The item is correctly put in an armor slot of the player inventory ?
-		if ( isSetToSlot )
-		{
-			event.getItem().remove();
 
-			// Todo : Play pickup sound
-			//event.getPlayer().getWorld().playEffect(event.getPlayer().getLocation(), Effect.CLICK2, 0);
-			event.setCancelled( true );
-		}
+		event.getItem().remove();
+
+		// Todo : Play pickup sound
+		//event.getPlayer().getWorld().playEffect(event.getPlayer().getLocation(), Effect.CLICK2, 0);
+		event.setCancelled( true );
 	}
 }
