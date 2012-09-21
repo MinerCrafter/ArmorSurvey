@@ -17,12 +17,14 @@
 
 package fr.imagicraft.armorsurvey.listeners;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 
 import fr.imagicraft.armorsurvey.ArmorItems;
 import fr.imagicraft.armorsurvey.ArmorSurvey;
@@ -67,13 +69,15 @@ public class PlayerPickupItemListener implements Listener {
 			return;
 		}
 		
+		Player player = event.getPlayer();
+		
 		// Allowed to do this ?
-		if ( ! this.base.getPerms().has( event.getPlayer(), "armorsurvey.use" ) ) {
+		if ( ! this.base.getPerms().has( player, "armorsurvey.use" ) ) {
 			return;
 		}
 		
 		// Getting player's inventory
-		PlayerInventory inv = event.getPlayer().getInventory();
+		PlayerInventory inv = player.getInventory();
 		if ( null == inv ) {
 			return;
 		}
@@ -95,12 +99,13 @@ public class PlayerPickupItemListener implements Listener {
 			return;
 		}
 		
-		// The item is correctly put in an armor slot of the player inventory ?
-
+		// The item is correctly put in an armor slot of the player inventory
 		event.getItem().remove();
 
-		// Todo : Play pickup sound
-		//event.getPlayer().getWorld().playEffect(event.getPlayer().getLocation(), Effect.CLICK2, 0);
+		// Play pickup sound
+		player.playSound(player.getLocation(), Sound.ITEM_PICKUP, 1, 1);
+		
+		// Cancel the event
 		event.setCancelled( true );
 	}
 }
