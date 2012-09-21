@@ -83,17 +83,53 @@ public class PlayerPickupItemListener implements Listener {
 		}
 		
 		// What is the part of armor ?
-		if ( armorItem.isHelmet() && inv.getHelmet() == null ) {
-			inv.setHelmet( event.getItem().getItemStack() );
+		if ( armorItem.isHelmet() ) {
+			if ( inv.getHelmet() == null ) {
+				inv.setHelmet( event.getItem().getItemStack() );
+			}
+			else if ( armorItem.checkPriority( inv.getHelmet().getType() ) ) {
+				inv.addItem( inv.getHelmet() );
+				inv.setHelmet( event.getItem().getItemStack() );
+			}
+			else {
+				return;
+			}
 		}
-		else if ( armorItem.isChestplate() && inv.getChestplate() == null ) {
-			inv.setChestplate( event.getItem().getItemStack() );
+		else if ( armorItem.isChestplate() ) {
+			if ( inv.getChestplate() == null ) {
+				inv.setChestplate( event.getItem().getItemStack() );
+			}
+			else if ( armorItem.checkPriority( inv.getChestplate().getType() ) ) {
+				inv.addItem( inv.getChestplate() );
+				inv.setChestplate( event.getItem().getItemStack() );
+			}
+			else {
+				return;
+			}
 		}
-		else if ( armorItem.isLeggings() && inv.getLeggings() == null ) {
-			inv.setLeggings( event.getItem().getItemStack() );
+		else if ( armorItem.isLeggings() ) {
+			if ( inv.getLeggings() == null ) {
+				inv.setLeggings( event.getItem().getItemStack() );
+			}
+			else if ( armorItem.checkPriority( inv.getLeggings().getType() ) ) {
+				inv.addItem( inv.getLeggings() );
+				inv.setLeggings( event.getItem().getItemStack() );
+			}
+			else {
+				return;
+			}
 		}
-		else if ( armorItem.isBoots() && inv.getBoots() == null ) {
-			inv.setBoots( event.getItem().getItemStack() );
+		else if ( armorItem.isBoots() && ( inv.getBoots() == null || armorItem.checkPriority( inv.getBoots().getType() ) ) ) {
+			if ( inv.getBoots() == null ) {
+				inv.setBoots( event.getItem().getItemStack() );
+			}
+			else if ( armorItem.checkPriority( inv.getBoots().getType() ) ) {
+				inv.addItem( inv.getBoots() );
+				inv.setBoots( event.getItem().getItemStack() );
+			}
+			else {
+				return;
+			}
 		}
 		else {
 			return;

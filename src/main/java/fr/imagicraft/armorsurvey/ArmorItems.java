@@ -29,34 +29,36 @@ import com.google.common.collect.Maps;
  * @author MinerCrafter
  */
 public enum ArmorItems {
-	LEATHER_HELMET(			Material.LEATHER_HELMET,		ArmorItemsTypes.HELMET),
-	LEATHER_CHESTPLATE(		Material.LEATHER_CHESTPLATE,	ArmorItemsTypes.CHESTPLATE ),
-	LEATHER_LEGGINGS(		Material.LEATHER_LEGGINGS,		ArmorItemsTypes.LEGGINGS ),
-	LEATHER_BOOTS(			Material.LEATHER_BOOTS,			ArmorItemsTypes.BOOTS ),
-	CHAINMAIL_HELMET(		Material.CHAINMAIL_HELMET,		ArmorItemsTypes.HELMET ),
-	CHAINMAIL_CHESTPLATE(	Material.CHAINMAIL_CHESTPLATE,	ArmorItemsTypes.CHESTPLATE ),
-	CHAINMAIL_LEGGINGS(		Material.CHAINMAIL_LEGGINGS,	ArmorItemsTypes.LEGGINGS ),
-	CHAINMAIL_BOOTS(		Material.CHAINMAIL_BOOTS,		ArmorItemsTypes.BOOTS ),
-	IRON_HELMET(			Material.IRON_HELMET,			ArmorItemsTypes.HELMET ),
-	IRON_CHESTPLATE(		Material.IRON_CHESTPLATE,		ArmorItemsTypes.CHESTPLATE ),
-	IRON_LEGGINGS(			Material.IRON_LEGGINGS,			ArmorItemsTypes.LEGGINGS ),
-	IRON_BOOTS(				Material.IRON_BOOTS,			ArmorItemsTypes.BOOTS ),
-	GOLD_HELMET(			Material.GOLD_HELMET,			ArmorItemsTypes.HELMET ),
-	GOLD_CHESTPLATE(		Material.GOLD_CHESTPLATE,		ArmorItemsTypes.CHESTPLATE ),
-	GOLD_LEGGINGS(			Material.GOLD_LEGGINGS,			ArmorItemsTypes.LEGGINGS ),
-	GOLD_BOOTS(				Material.GOLD_BOOTS,			ArmorItemsTypes.BOOTS ),
-	DIAMOND_HELMET(			Material.DIAMOND_HELMET,		ArmorItemsTypes.HELMET ),
-	DIAMOND_CHESTPLATE(		Material.DIAMOND_CHESTPLATE,	ArmorItemsTypes.CHESTPLATE ),
-	DIAMOND_LEGGINGS(		Material.DIAMOND_LEGGINGS,		ArmorItemsTypes.LEGGINGS ),
-	DIAMOND_BOOTS(			Material.DIAMOND_BOOTS,			ArmorItemsTypes.BOOTS );
+	LEATHER_HELMET(			Material.LEATHER_HELMET,		ArmorItemsTypes.HELMET,			5 ),
+	LEATHER_CHESTPLATE(		Material.LEATHER_CHESTPLATE,	ArmorItemsTypes.CHESTPLATE,		5 ),
+	LEATHER_LEGGINGS(		Material.LEATHER_LEGGINGS,		ArmorItemsTypes.LEGGINGS,		5 ),
+	LEATHER_BOOTS(			Material.LEATHER_BOOTS,			ArmorItemsTypes.BOOTS,			5 ),
+	CHAINMAIL_HELMET(		Material.CHAINMAIL_HELMET,		ArmorItemsTypes.HELMET,			3 ),
+	CHAINMAIL_CHESTPLATE(	Material.CHAINMAIL_CHESTPLATE,	ArmorItemsTypes.CHESTPLATE,		3 ),
+	CHAINMAIL_LEGGINGS(		Material.CHAINMAIL_LEGGINGS,	ArmorItemsTypes.LEGGINGS,		3 ),
+	CHAINMAIL_BOOTS(		Material.CHAINMAIL_BOOTS,		ArmorItemsTypes.BOOTS,			3 ),
+	IRON_HELMET(			Material.IRON_HELMET,			ArmorItemsTypes.HELMET,			2 ),
+	IRON_CHESTPLATE(		Material.IRON_CHESTPLATE,		ArmorItemsTypes.CHESTPLATE,		2 ),
+	IRON_LEGGINGS(			Material.IRON_LEGGINGS,			ArmorItemsTypes.LEGGINGS,		2 ),
+	IRON_BOOTS(				Material.IRON_BOOTS,			ArmorItemsTypes.BOOTS,			2 ),
+	GOLD_HELMET(			Material.GOLD_HELMET,			ArmorItemsTypes.HELMET,			4 ),
+	GOLD_CHESTPLATE(		Material.GOLD_CHESTPLATE,		ArmorItemsTypes.CHESTPLATE,		4 ),
+	GOLD_LEGGINGS(			Material.GOLD_LEGGINGS,			ArmorItemsTypes.LEGGINGS,		4 ),
+	GOLD_BOOTS(				Material.GOLD_BOOTS,			ArmorItemsTypes.BOOTS,			4 ),
+	DIAMOND_HELMET(			Material.DIAMOND_HELMET,		ArmorItemsTypes.HELMET, 		1 ),
+	DIAMOND_CHESTPLATE(		Material.DIAMOND_CHESTPLATE,	ArmorItemsTypes.CHESTPLATE,		1 ),
+	DIAMOND_LEGGINGS(		Material.DIAMOND_LEGGINGS,		ArmorItemsTypes.LEGGINGS,		1 ),
+	DIAMOND_BOOTS(			Material.DIAMOND_BOOTS,			ArmorItemsTypes.BOOTS,			1 );
 	
 	private final Material material;
 	private final ArmorItemsTypes type;
+	private final int priority;
 	private final static Map<Material, ArmorItems> BY_MATERIAL = Maps.newHashMap();
 	
-	private ArmorItems( final Material item, final ArmorItemsTypes type ) {
+	private ArmorItems( final Material item, final ArmorItemsTypes type, int priority ) {
 		this.material = item;
 		this.type = type;
+		this.priority = priority;
 	}
 	
 	static {
@@ -81,6 +83,21 @@ public enum ArmorItems {
 	 */
 	public ArmorItemsTypes getType() {
 		return this.type;
+	}
+	
+	/**
+	 * Returns the priority of the armor item
+	 * 
+	 * 1 - Diamond
+	 * 2 - Iron
+	 * 3 - Chain
+	 * 4 - Gold
+	 * 5 - Leather
+	 * 
+	 * @return Priority of the armor item
+	 */
+	public int getPriority() {
+		return this.priority;
 	}
 	
 	/**
@@ -127,6 +144,26 @@ public enum ArmorItems {
 	 */
 	public boolean isBoots() {
 		return this.type == ArmorItemsTypes.BOOTS;
+	}
+	
+	/**
+	 * Check if the picked up item must replace the inventory item
+	 * 
+	 * @param invItem The actually inventory item
+	 * @return True if the picked up item is priority than the inventory item
+	 */
+	public boolean checkPriority( ArmorItems invItem ) {
+		return ( this.priority < invItem.getPriority() );
+	}
+	
+	/**
+	 * Check if the picked up item must replace the inventory item
+	 * 
+	 * @param invItem The actually inventory item
+	 * @return True if the picked up item is priority than the inventory item
+	 */
+	public boolean checkPriority( Material invItem ) {
+		return ( this.priority < ArmorItems.getByMaterial( invItem ).getPriority() );
 	}
 	
 	/**
